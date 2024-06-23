@@ -1,3 +1,13 @@
+=begin
+Use the right slider to find a potential window.  When the potential
+window size is smaller than the previous one, reassign it to min_window.
+Move on to find the next potential window by using the left slider until
+another potential window cannot be found (meaning the available characters
+are smaller than the required numbers of characters in "second" )
+=end
+
+# window_count[key] < value && !window_count.empty? &&
+
 def min_window_substring(str)
   first = str[0].chars
   second = str[1].chars
@@ -23,10 +33,8 @@ def min_window_substring(str)
 
   window_count = Hash.new
 
-  until second_count.any? { |key, value|
-    !window_count.empty? &&
-      window_count[key] < value && first_count[key].count < second_count[key]
-  }
+  until second_count.any? { |key, value| first_count[key].count < second_count[key] }
+
     second.each do |char|
       if !potential_window.include?(char)
         right = first_count[char].first
@@ -40,7 +48,7 @@ def min_window_substring(str)
 
     potential_window_length = potential_window.length
     potential_window_length <= min_window_length ? min_window = potential_window : min_window
-
+    min_window_length = min_window.length
     # p min_window
 
     common_characters = potential_window.each.select { |each| second.include?(each) }
@@ -60,7 +68,7 @@ end
 p min_window_substring(["ahffaksfajeeubsne", "jefaab"])
 # Output: aksfajeeub
 
-# p min_window_substring(["aaffhkksemfkelloe", "fheam"])
+p min_window_substring(["aaffhkksemfkelloe", "fheam"])
 # Output: affhkksem
 
-# p min_window_substring(["ADOBECODEBANC", "ABC"])
+p min_window_substring(["ADOBECODEBANC", "ABC"])
